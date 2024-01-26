@@ -21,3 +21,45 @@ class Smart_switch():
         else:
             await socket.turn_on_smart_switch(self.entity_id)
             self.is_on = True
+
+    
+    async def turn_on(self, socket: RustSocket):
+        """
+        Turn on this Smart switch 
+        (will probably not work if the smart switch as been update manually in the game)
+
+        Args:
+            socket (RustScoket): current rustsocket
+
+        Return: void
+        """
+        await socket.turn_on_smart_switch(self.entity_id)
+        self.is_on = True
+    
+
+    async def turn_off(self, socket: RustSocket):
+        """
+        Turn off this Smart switch 
+        (will probably not work if the smart switch as been update manually in the game)
+
+        Args:
+            socket (RustSocket): current rustsocket
+
+        Return: void
+        """
+        await socket.turn_off_smart_switch(self.entity_id)
+        self.is_on = False
+
+
+    async def update(self, socket: RustSocket):
+        """
+        Update instance information about the Switch current value 
+        (could be important to run before turn_off/on or toggle method to make them work in any case)
+
+        Args:
+            socket (RustSocket): current rustsocket
+
+        Return: void
+        """
+        switch_data = await socket.get_entity_info(self.entity_id)
+        self.is_on = switch_data.value
